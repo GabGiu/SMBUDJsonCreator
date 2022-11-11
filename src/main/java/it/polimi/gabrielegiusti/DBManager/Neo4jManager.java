@@ -108,5 +108,59 @@ public class Neo4jManager implements AutoCloseable{
             throw ex;
         }
     }
+
+    public List<Record> findAllArticles(){
+        Query query = new Query(
+                """
+                        MATCH (sa:ScientificArticle)
+                        RETURN sa AS Article
+                        """
+        );
+
+        try (var session = driver.session(SessionConfig.forDatabase("neo4j"))){
+            return session.executeRead(tx -> tx.run(query).list());
+        }catch (Neo4jException ex) {
+            LOGGER.log(Level.SEVERE, query + " raised an exception", ex);
+            throw ex;
+        }
+    }
+
+    public List<Record> findAffiliationByAuthorID(String authorID){
+        Query query = new Query(
+                """
+                        MATCH (a:Author)-[:RESEARCH]->(a1:Affiliation)
+                        WHERE a.authorID = $authorID
+                        RETURN a1 AS Affiliation
+                        """,
+                Map.of("authorID", authorID)
+        );
+
+        try (var session = driver.session(SessionConfig.forDatabase("neo4j"))){
+            return session.executeRead(tx -> tx.run(query).list());
+        }catch (Neo4jException ex) {
+            LOGGER.log(Level.SEVERE, query + " raised an exception", ex);
+            throw ex;
+        }
+    }
+
+    public  List<Record> findLocationByAffiliationID(String affiliationID){
+        Query query = new Query(
+                """
+                        MATCH (a:Affiliation)-[:PLACE]->(l:Location)
+                        WHERE sa.articleID = $affiliationID
+                        RETURN l AS Location
+                        """,
+                Map.of("affiliationID", affiliationID)
+        );
+
+        try (var session = driver.session(SessionConfig.forDatabase("neo4j"))){
+            return session.executeRead(tx -> tx.run(query).list());
+        }catch (Neo4jException ex) {
+            LOGGER.log(Level.SEVERE, query + " raised an exception", ex);
+            throw ex;
+        }
+    }
+
+
 }
 

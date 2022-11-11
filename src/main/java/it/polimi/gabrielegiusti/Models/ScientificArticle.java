@@ -3,7 +3,7 @@ package it.polimi.gabrielegiusti.Models;
 import java.util.Date;
 import java.util.List;
 
-public class ScientificArticleModel {
+public class ScientificArticle {
 
     private String title;
 
@@ -21,9 +21,9 @@ public class ScientificArticleModel {
 
     private Section section;
 
-    public ScientificArticleModel(String title, String article_abstract,
-                                  Date year, String type, String DOI, List<Author> authors,
-                                  PublicationDetails publicationDetails, Section section) {
+    public ScientificArticle(String title, String article_abstract,
+                             Date year, String type, String DOI, List<Author> authors,
+                             PublicationDetails publicationDetails, Section section) {
         this.title = title;
         this.article_abstract = article_abstract;
         this.year = year;

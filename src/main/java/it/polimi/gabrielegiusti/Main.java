@@ -1,6 +1,8 @@
 package it.polimi.gabrielegiusti;
 
 import it.polimi.gabrielegiusti.DBManager.Neo4jManager;
+import it.polimi.gabrielegiusti.Models.Author;
+import it.polimi.gabrielegiusti.Models.ScientificArticle;
 import org.neo4j.driver.Config;
 
 public class Main {
@@ -11,8 +13,12 @@ public class Main {
         String username = "neo4j";
         String password = "ggeeRNSFsyayFSp86dQqNpZ4wUt7vroXY_lZyMiH-OU";
 
+        ScientificArticle scientificArticle;
+        Author author;
+
         try (var app = new Neo4jManager(uri, username, password, Config.defaultConfig())){
-            app.findAllAuthors();
+
+
         } catch (Exception e){
             e.printStackTrace();
         }
