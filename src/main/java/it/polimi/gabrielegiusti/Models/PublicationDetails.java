@@ -16,6 +16,8 @@ public class PublicationDetails {
 
     private String editor;
 
+    public PublicationDetails(){}
+
     public PublicationDetails(String journalName, String volume,
                               int number, Date date, int pages,
                               String editor) {

@@ -15,6 +15,8 @@ public class Section {
 
     private String bibliography;
 
+    public Section(){}
+
     public Section(String sectionTitle, String[] paragraph,
                    String[] subsection, Map<String, Image> figures,
                    String bibliography) {

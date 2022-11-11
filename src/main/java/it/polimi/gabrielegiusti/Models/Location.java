@@ -8,6 +8,8 @@ public class Location {
 
     private String country;
 
+    public Location(){};
+
     public Location(String zipcode, String city, String country) {
         this.zipcode = zipcode;
         this.city = city;

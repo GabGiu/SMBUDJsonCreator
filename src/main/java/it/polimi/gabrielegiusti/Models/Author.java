@@ -16,6 +16,8 @@ public class Author {
 
     private Date dateOfBirth;
 
+    public Author(){}
+
     public Author(Affiliation affiliation, String email, String bio,
                   String name, String surname, Date dateOfBirth) {
         this.affiliation = affiliation;

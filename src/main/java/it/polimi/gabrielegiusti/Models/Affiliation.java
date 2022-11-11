@@ -8,6 +8,8 @@ public class Affiliation {
 
     private Location location;
 
+    public Affiliation(){}
+
     public Affiliation(String affiliationName, String affiliationDepartment, Location location) {
         this.affiliationName = affiliationName;
         this.affiliationDepartment = affiliationDepartment;

@@ -125,7 +125,7 @@ public class Neo4jManager implements AutoCloseable{
         }
     }
 
-    public List<Record> findAffiliationByAuthorID(String authorID){
+    public Record findAffiliationByAuthorID(String authorID){
         Query query = new Query(
                 """
                         MATCH (a:Author)-[:RESEARCH]->(a1:Affiliation)
@@ -136,14 +136,14 @@ public class Neo4jManager implements AutoCloseable{
         );
 
         try (var session = driver.session(SessionConfig.forDatabase("neo4j"))){
-            return session.executeRead(tx -> tx.run(query).list());
+            return session.executeRead(tx -> tx.run(query).single());
         }catch (Neo4jException ex) {
             LOGGER.log(Level.SEVERE, query + " raised an exception", ex);
             throw ex;
         }
     }
 
-    public  List<Record> findLocationByAffiliationID(String affiliationID){
+    public  Record findLocationByAffiliationID(String affiliationID){
         Query query = new Query(
                 """
                         MATCH (a:Affiliation)-[:PLACE]->(l:Location)
@@ -154,12 +154,13 @@ public class Neo4jManager implements AutoCloseable{
         );
 
         try (var session = driver.session(SessionConfig.forDatabase("neo4j"))){
-            return session.executeRead(tx -> tx.run(query).list());
+            return session.executeRead(tx -> tx.run(query).single());
         }catch (Neo4jException ex) {
             LOGGER.log(Level.SEVERE, query + " raised an exception", ex);
             throw ex;
         }
     }
+
 
 
 }
