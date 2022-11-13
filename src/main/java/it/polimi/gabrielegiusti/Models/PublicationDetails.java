@@ -76,4 +76,5 @@ public class PublicationDetails {
     public void setEditor(String editor) {
         this.editor = editor;
     }
+
 }

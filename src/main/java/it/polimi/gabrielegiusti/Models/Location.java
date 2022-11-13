@@ -2,7 +2,7 @@ package it.polimi.gabrielegiusti.Models;
 
 public class Location {
 
-    private String zipcode;
+    private int zipcode;
 
     private String city;
 
@@ -10,17 +10,17 @@ public class Location {
 
     public Location(){};
 
-    public Location(String zipcode, String city, String country) {
+    public Location(int zipcode, String city, String country) {
         this.zipcode = zipcode;
         this.city = city;
         this.country = country;
     }
 
-    public String getZipcode() {
+    public int getZipcode() {
         return zipcode;
     }
 
-    public void setZipcode(String zipcode) {
+    public void setZipcode(int zipcode) {
         this.zipcode = zipcode;
     }
 

@@ -66,4 +66,6 @@ public class Section {
     public void setBibliography(String bibliography) {
         this.bibliography = bibliography;
     }
+
+
 }
