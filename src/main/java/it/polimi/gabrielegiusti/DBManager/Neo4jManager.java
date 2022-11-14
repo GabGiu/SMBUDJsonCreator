@@ -23,54 +23,6 @@ public class Neo4jManager implements AutoCloseable{
         driver.close();
     }
 
-
-    public void createFriendship(final String person1Name, final String person2Name) {
-        // To learn more about the Cypher syntax, see https://neo4j.com/docs/cypher-manual/current/
-        // The Reference Card is also a good resource for keywords https://neo4j.com/docs/cypher-refcard/current/
-        var query = new Query(
-                """
-                   CREATE (p1:Person { name: $person1_name })
-                   CREATE (p2:Person { name: $person2_name, surname: "rossi"})
-                   CREATE (p1)-[:KNOWS]->(p2)
-                   RETURN p1, p2
-                   """,
-                Map.of("person1_name", person1Name, "person2_name", person2Name));
-
-        try (var session = driver.session(SessionConfig.forDatabase("neo4j"))) {
-            // Write transactions allow the driver to handle retries and transient errors
-            var record = session.executeWrite(tx -> tx.run(query).single());
-            System.out.printf(
-                    "Created friendship between: %s, %s%n",
-                    record.get("p1").get("name").asString(),
-                    record.get("p2").get("name").asString());
-            // You should capture any errors along with the query and data for traceability
-        } catch (Neo4jException ex) {
-            LOGGER.log(Level.SEVERE, query + " raised an exception", ex);
-            throw ex;
-        }
-    }
-
-    public void findPerson(final String personName) {
-        var query = new Query(
-                """
-                   MATCH (p:Person)
-                   WHERE p.name = $person_name
-                   RETURN p.name AS name
-                   """,
-                Map.of("person_name", personName));
-
-        try (var session = driver.session(SessionConfig.forDatabase("neo4j"))) {
-            var records = session.executeRead(tx -> tx.run(query).list());
-            for (Record record : records){
-                System.out.printf("Found person: %s%n", record.get("name").asString());
-            }
-            // You should capture any errors along with the query and data for traceability
-        } catch (Neo4jException ex) {
-            LOGGER.log(Level.SEVERE, query + " raised an exception", ex);
-            throw ex;
-        }
-    }
-
     public List<Record> findAllAuthors(){
         Query query = new Query(
                 """
@@ -114,7 +66,7 @@ public class Neo4jManager implements AutoCloseable{
                 """
                         MATCH (sa:ScientificArticle)
                         RETURN sa AS Article
-                        LIMIT 20
+                        LIMIT 5900
                         """
         );
 

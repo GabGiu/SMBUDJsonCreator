@@ -22,23 +22,33 @@ public class HttpHandler {
         return postRequest;
     }
 
-    public void setPostRequest(HttpPost postRequest) {
-        this.postRequest = postRequest;
+    public void setPostRequest(String postRequest) {
+
+        this.getRequest = null;
+        this.deleteRequest = null;
+        this.postRequest = new HttpPost(postRequest);
     }
 
     public HttpGet getGetRequest() {
         return getRequest;
     }
 
-    public void setGetRequest(HttpGet getRequest) {
-        this.getRequest = getRequest;
+    public void setGetRequest(String getRequest) {
+
+        this.deleteRequest = null;
+        this.postRequest = null;
+        this.getRequest = new HttpGet(getRequest);
     }
 
     public HttpDelete getDeleteRequest() {
         return deleteRequest;
     }
 
-    public void setDeleteRequest(HttpDelete deleteRequest) {
-        this.deleteRequest = deleteRequest;
+    public void setDeleteRequest(String deleteRequest) {
+
+        this.getRequest = null;
+        this.postRequest = null;
+        this.deleteRequest = new HttpDelete(deleteRequest);
     }
+
 }

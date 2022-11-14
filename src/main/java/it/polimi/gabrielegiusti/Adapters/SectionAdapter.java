@@ -4,13 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import it.polimi.gabrielegiusti.Models.Affiliation;
-import it.polimi.gabrielegiusti.Models.Author;
 import it.polimi.gabrielegiusti.Models.Section;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.Date;
 import java.util.Map;
 
 public class SectionAdapter<T> extends TypeAdapter<T> {

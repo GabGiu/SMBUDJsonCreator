@@ -6,7 +6,13 @@ import it.polimi.gabrielegiusti.Models.*;
 import org.neo4j.driver.Config;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Value;
+import org.neo4j.driver.exceptions.value.Uncoercible;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -42,17 +48,6 @@ public class Main {
             int affiliationSkip = 0;
             int locationSkip = 0;
 
-            /*double i = 0;
-            double j = allArticlesRecord.size();
-            for (Record record : allArticlesRecord){
-                double perc = ((i/j)*100);
-                System.out.println(Math.floor(perc)+"%");
-                ScientificArticle scientificArticle = new ScientificArticle();
-                scientificArticle.populateArticle(app, record);
-                scientificArticles.add(scientificArticle);
-                i++;
-            }*/
-
             double h = 0;
             double f = allArticlesRecord.size();
             for (Record record : allArticlesRecord){
@@ -64,7 +59,12 @@ public class Main {
                 articleToStore.setDOI(record.get("Article").get("DOI").asString());
                 articleToStore.setType(record.get("Article").get("type").asString());
                 if (!record.get("Article").get("year").isNull()){
-                    articleToStore.setYear(record.get("Article").get("year").asInt());
+                    try {
+                        articleToStore.setYear(record.get("Article").get("year").asInt());
+                    } catch (Uncoercible e){
+                        articleToStore.setYear(Integer.parseInt(record.get("Article").get("year").asString()));
+                    }
+
                 }
 
                 for (int i = 0; i < allAuthorsRecord.size(); i++){
@@ -128,7 +128,30 @@ public class Main {
 
             JsonHandler jsonHandler = new JsonHandler();
 
-            System.out.println(jsonHandler.objectToJson(scientificArticles));
+            String postUrl = "http://localhost:8080/SMBUD-API/rest/provisioning/articles/createMultiple";
+            URL url = new URL(postUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setDoOutput(true);
+            String jsonInputString = jsonHandler.objectToJson(scientificArticles);
+
+            try (OutputStream os = connection.getOutputStream()){
+                byte[] input = jsonInputString.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            try (BufferedReader br = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream(), "utf-8"))){
+
+                StringBuilder response = new StringBuilder();
+                String responseLine = null;
+                while ((responseLine = br.readLine()) != null){
+                    response.append(responseLine.trim());
+                }
+                System.out.println(response.toString());
+            }
 
 
         } catch (Exception e){

@@ -5,11 +5,9 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import it.polimi.gabrielegiusti.Models.PublicationDetails;
-import it.polimi.gabrielegiusti.Models.Section;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.Map;
 
 public class PublicationDetailsAdapter<T> extends TypeAdapter<T> {
 
