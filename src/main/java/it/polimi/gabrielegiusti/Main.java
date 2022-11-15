@@ -3,6 +3,7 @@ package it.polimi.gabrielegiusti;
 import it.polimi.gabrielegiusti.DBManager.Neo4jManager;
 import it.polimi.gabrielegiusti.Handlers.JsonHandler;
 import it.polimi.gabrielegiusti.Models.*;
+import me.tongfei.progressbar.ProgressBar;
 import org.neo4j.driver.Config;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Value;
@@ -48,82 +49,81 @@ public class Main {
             int affiliationSkip = 0;
             int locationSkip = 0;
 
-            double h = 0;
-            double f = allArticlesRecord.size();
-            for (Record record : allArticlesRecord){
-                double perc = ((h/f)*100);
-                System.out.println(Math.floor(perc)+"%");
-                authors.clear();
-                articleToStore = new ScientificArticle();
-                articleToStore.setTitle(record.get("Article").get("title").asString());
-                articleToStore.setDOI(record.get("Article").get("DOI").asString());
-                articleToStore.setType(record.get("Article").get("type").asString());
-                if (!record.get("Article").get("year").isNull()){
-                    try {
-                        articleToStore.setYear(record.get("Article").get("year").asInt());
-                    } catch (Uncoercible e){
-                        articleToStore.setYear(Integer.parseInt(record.get("Article").get("year").asString()));
-                    }
-
-                }
-
-                for (int i = 0; i < allAuthorsRecord.size(); i++){
-                    if (allAuthorsRecord.get(i).get("articleID").asList(Value::asInt).contains(record.get("Article").get("articleID").asInt())){
-                        authorToStore = new Author();
-                        authorToStore.setName(allAuthorsRecord.get(i).get("Author").get("name").asString());
-                        authorToStore.setSurname(allAuthorsRecord.get(i).get("Author").get("surname").asString());
-                        authorToStore.setBio("");
-                        authorToStore.setDateOfBirth(null);
-                        authorToStore.setEmail("");
-
-                        for (int j = 0; j < allAffiliationsRecord.size(); j++){
-                            if (Objects.equals(allAffiliationsRecord.get(j).get("authorID").asString(), allAuthorsRecord.get(i).get("Author").get("authorOrcid").asString())){
-
-                                affiliationToStore = new Affiliation();
-                                affiliationToStore.setAffiliationName(allAffiliationsRecord.get(j).get("Affiliation").get("affiliationName").asString());
-                                affiliationToStore.setAffiliationDepartment(allAffiliationsRecord.get(j).get("Affiliation").get("department").asString());
-
-                                for (int k = 0; k < allLocationsRecord.size(); k++){
-                                    if (allLocationsRecord.get(k).get("affiliationID").asInt() == allAffiliationsRecord.get(j).get("Affiliation").get("affiliationID").asInt()){
-                                        locationToStore = new Location();
-                                        locationToStore.setZipcode(allLocationsRecord.get(k).get("Location").get("zipcode").asInt());
-                                        locationToStore.setCity(allLocationsRecord.get(k).get("Location").get("city").asString());
-                                        locationToStore.setCountry(allLocationsRecord.get(k).get("Location").get("country").asString());
-                                        break;
-                                    }
-                                    if (k == allLocationsRecord.size() - 2 && totalNumberOfLocations > locationSkip){
-                                        k = 0;
-                                        locationSkip += 999;
-                                        allLocationsRecord = Stream.concat(allLocationsRecord.stream(), app.getChunksOfLocations(locationSkip).stream()).toList();
-                                    }
-                                }
-                                affiliationToStore.setLocation(locationToStore);
-                                break;
-                            }
-                            if (j == allAffiliationsRecord.size() - 2 && totalNumberOfAffiliation > affiliationSkip){
-                                j = 0;
-                                affiliationSkip += 999;
-                                allAffiliationsRecord = Stream.concat(allAffiliationsRecord.stream(), app.getChunksOfAffiliations(affiliationSkip).stream()).toList();
-                            }
+            try(ProgressBar progressBar = new ProgressBar("Test", 100)) {
+                progressBar.maxHint(allArticlesRecord.size());
+                for (Record record : allArticlesRecord) {
+                    progressBar.step();
+                    authors.clear();
+                    articleToStore = new ScientificArticle();
+                    articleToStore.setTitle(record.get("Article").get("title").asString());
+                    articleToStore.setDOI(record.get("Article").get("DOI").asString());
+                    articleToStore.setType(record.get("Article").get("type").asString());
+                    if (!record.get("Article").get("year").isNull()) {
+                        try {
+                            articleToStore.setYear(record.get("Article").get("year").asInt());
+                        } catch (Uncoercible e) {
+                            articleToStore.setYear(Integer.parseInt(record.get("Article").get("year").asString()));
                         }
-                        authorToStore.setAffiliation(affiliationToStore);
-                        authors.add(authorToStore);
-                    }
-                    if (i == allAuthorsRecord.size() - 2 && totalNumberOfAuthors > authorSkip){
-                        i = 0;
-                        authorSkip += 999;
-                        allAuthorsRecord = Stream.concat(allAuthorsRecord.stream(), app.getChunksOfAuthors(authorSkip).stream()).toList();
+
                     }
 
+                    for (int i = 0; i < allAuthorsRecord.size(); i++) {
+                        if (allAuthorsRecord.get(i).get("articleID").asList(Value::asInt).contains(record.get("Article").get("articleID").asInt())) {
+                            authorToStore = new Author();
+                            authorToStore.setName(allAuthorsRecord.get(i).get("Author").get("name").asString());
+                            authorToStore.setSurname(allAuthorsRecord.get(i).get("Author").get("surname").asString());
+                            authorToStore.setBio("");
+                            authorToStore.setDateOfBirth(null);
+                            authorToStore.setEmail("");
 
+                            for (int j = 0; j < allAffiliationsRecord.size(); j++) {
+                                if (Objects.equals(allAffiliationsRecord.get(j).get("authorID").asString(), allAuthorsRecord.get(i).get("Author").get("authorOrcid").asString())) {
+
+                                    affiliationToStore = new Affiliation();
+                                    affiliationToStore.setAffiliationName(allAffiliationsRecord.get(j).get("Affiliation").get("affiliationName").asString());
+                                    affiliationToStore.setAffiliationDepartment(allAffiliationsRecord.get(j).get("Affiliation").get("department").asString());
+
+                                    for (int k = 0; k < allLocationsRecord.size(); k++) {
+                                        if (allLocationsRecord.get(k).get("affiliationID").asInt() == allAffiliationsRecord.get(j).get("Affiliation").get("affiliationID").asInt()) {
+                                            locationToStore = new Location();
+                                            locationToStore.setZipcode(allLocationsRecord.get(k).get("Location").get("zipcode").asInt());
+                                            locationToStore.setCity(allLocationsRecord.get(k).get("Location").get("city").asString());
+                                            locationToStore.setCountry(allLocationsRecord.get(k).get("Location").get("country").asString());
+                                            break;
+                                        }
+                                        if (k == allLocationsRecord.size() - 2 && totalNumberOfLocations > locationSkip) {
+                                            k = 0;
+                                            locationSkip += 999;
+                                            allLocationsRecord = Stream.concat(allLocationsRecord.stream(), app.getChunksOfLocations(locationSkip).stream()).toList();
+                                        }
+                                    }
+                                    affiliationToStore.setLocation(locationToStore);
+                                    break;
+                                }
+                                if (j == allAffiliationsRecord.size() - 2 && totalNumberOfAffiliation > affiliationSkip) {
+                                    j = 0;
+                                    affiliationSkip += 999;
+                                    allAffiliationsRecord = Stream.concat(allAffiliationsRecord.stream(), app.getChunksOfAffiliations(affiliationSkip).stream()).toList();
+                                }
+                            }
+                            authorToStore.setAffiliation(affiliationToStore);
+                            authors.add(authorToStore);
+                        }
+                        if (i == allAuthorsRecord.size() - 2 && totalNumberOfAuthors > authorSkip) {
+                            i = 0;
+                            authorSkip += 999;
+                            allAuthorsRecord = Stream.concat(allAuthorsRecord.stream(), app.getChunksOfAuthors(authorSkip).stream()).toList();
+                        }
+
+
+                    }
+
+                    articleToStore.setAuthors(authors);
+                    articleToStore.setArticle_abstract("");
+                    articleToStore.setSection(new Section());
+                    articleToStore.setPublicationDetails(new PublicationDetails());
+                    scientificArticles.add(articleToStore);
                 }
-
-                articleToStore.setAuthors(authors);
-                articleToStore.setArticle_abstract("");
-                articleToStore.setSection(new Section());
-                articleToStore.setPublicationDetails(new PublicationDetails());
-                scientificArticles.add(articleToStore);
-                h++;
             }
 
             JsonHandler jsonHandler = new JsonHandler();

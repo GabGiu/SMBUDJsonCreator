@@ -53,6 +53,27 @@ public class PublicationDetailsAdapter<T> extends TypeAdapter<T> {
 
     @Override
     public T read(JsonReader jsonReader) throws IOException {
-        return null;
+        String fieldName;
+
+        PublicationDetails record = new PublicationDetails();
+
+        jsonReader.beginObject();
+
+        while (jsonReader.hasNext()){
+            fieldName = jsonReader.nextName();
+            switch (fieldName) {
+                case "journalName" -> record.setJournalName(gson.getAdapter(String.class).read(jsonReader));
+                case "volume" -> record.setVolume(gson.getAdapter(String.class).read(jsonReader));
+                case "number" -> record.setNumber(gson.getAdapter(Integer.class).read(jsonReader));
+                case "date" -> record.setDate(gson.getAdapter(Date.class).read(jsonReader));
+                case "pages" -> record.setPages(gson.getAdapter(Integer.class).read(jsonReader));
+                case "editor" -> record.setEditor(gson.getAdapter(String.class).read(jsonReader));
+                default -> jsonReader.skipValue();
+            }
+        }
+
+        jsonReader.endObject();
+
+        return (T) record;
     }
 }

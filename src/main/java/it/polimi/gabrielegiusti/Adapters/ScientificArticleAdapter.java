@@ -8,6 +8,7 @@ import it.polimi.gabrielegiusti.Models.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public class ScientificArticleAdapter<T> extends TypeAdapter<T> {
 
@@ -36,6 +37,9 @@ public class ScientificArticleAdapter<T> extends TypeAdapter<T> {
 
         jsonWriter.name("article_abstract");
         gson.getAdapter(String.class).write(jsonWriter, record.getArticle_abstract());
+
+        jsonWriter.name("metadata");
+        gson.getAdapter(Map.class).write(jsonWriter, record.getMetadata());
 
         jsonWriter.name("year");
         gson.getAdapter(Integer.class).write(jsonWriter, record.getYear());

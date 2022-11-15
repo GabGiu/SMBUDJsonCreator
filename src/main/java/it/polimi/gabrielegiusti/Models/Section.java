@@ -1,29 +1,24 @@
 package it.polimi.gabrielegiusti.Models;
 
 import java.awt.*;
+import java.util.List;
 import java.util.Map;
 
 public class Section {
 
     private String sectionTitle;
 
-    private String[] paragraph;
-
-    private String[] subsection;
-
-    private Map<String, Image> figures;
+    private List<Subsection> subsection;
 
     private String bibliography;
 
     public Section(){}
 
-    public Section(String sectionTitle, String[] paragraph,
-                   String[] subsection, Map<String, Image> figures,
+    public Section(String sectionTitle, List<Paragraph> paragraph,
+                   List<Subsection> subsection,
                    String bibliography) {
         this.sectionTitle = sectionTitle;
-        this.paragraph = paragraph;
         this.subsection = subsection;
-        this.figures = figures;
         this.bibliography = bibliography;
     }
 
@@ -35,28 +30,12 @@ public class Section {
         this.sectionTitle = sectionTitle;
     }
 
-    public String[] getParagraph() {
-        return paragraph;
-    }
-
-    public void setParagraph(String[] paragraph) {
-        this.paragraph = paragraph;
-    }
-
-    public String[] getSubsection() {
+    public List<Subsection> getSubsection() {
         return subsection;
     }
 
-    public void setSubsection(String[] subsection) {
+    public void setSubsection(List<Subsection> subsection) {
         this.subsection = subsection;
-    }
-
-    public Map<String, Image> getFigures() {
-        return figures;
-    }
-
-    public void setFigures(Map<String, Image> figures) {
-        this.figures = figures;
     }
 
     public String getBibliography() {
