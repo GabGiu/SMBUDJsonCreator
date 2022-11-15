@@ -7,7 +7,7 @@ import com.google.gson.stream.JsonWriter;
 import it.polimi.gabrielegiusti.Models.Section;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 
 public class SectionAdapter<T> extends TypeAdapter<T> {
 
@@ -33,14 +33,8 @@ public class SectionAdapter<T> extends TypeAdapter<T> {
         jsonWriter.name("sectionTitle");
         gson.getAdapter(String.class).write(jsonWriter, record.getSectionTitle());
 
-        jsonWriter.name("paragraph");
-        gson.getAdapter(String[].class).write(jsonWriter, record.getParagraph());
-
         jsonWriter.name("subsection");
-        gson.getAdapter(String[].class).write(jsonWriter, record.getSubsection());
-
-        jsonWriter.name("figures");
-        gson.getAdapter(Map.class).write(jsonWriter, record.getFigures());
+        gson.getAdapter(List.class).write(jsonWriter, record.getSubsection());
 
         jsonWriter.name("bibliography");
         gson.getAdapter(String.class).write(jsonWriter, record.getBibliography());
@@ -50,6 +44,24 @@ public class SectionAdapter<T> extends TypeAdapter<T> {
 
     @Override
     public T read(JsonReader jsonReader) throws IOException {
-        return null;
+        String fieldName;
+
+        Section record = new Section();
+
+        jsonReader.beginObject();
+
+        while (jsonReader.hasNext()){
+            fieldName = jsonReader.nextName();
+            switch (fieldName) {
+                case "sectionTitle" -> record.setSectionTitle(gson.getAdapter(String.class).read(jsonReader));
+                case "subsection" -> record.setSubsection(gson.getAdapter(List.class).read(jsonReader));
+                case "bibliography" -> record.setBibliography(gson.getAdapter(String.class).read(jsonReader));
+                default -> jsonReader.skipValue();
+            }
+        }
+
+        jsonReader.endObject();
+
+        return (T) record;
     }
 }

@@ -25,6 +25,10 @@ public class ScientificArticleTypeAdapterFactory  implements TypeAdapterFactory 
 
         if (PublicationDetails.class.isAssignableFrom(rawClass)) return PublicationDetailsAdapter.get(rawClass, gson);
 
+        if (Subsection.class.isAssignableFrom(rawClass)) return SubsectionAdapter.get(rawClass, gson);
+
+        if (Paragraph.class.isAssignableFrom(rawClass)) return ParagraphAdapter.get(rawClass, gson);
+
         return null;
     }
 }

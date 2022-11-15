@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import it.polimi.gabrielegiusti.Models.Affiliation;
 import it.polimi.gabrielegiusti.Models.Location;
 
 import java.io.IOException;

@@ -2,11 +2,13 @@ package it.polimi.gabrielegiusti.Models;
 
 import java.util.*;
 
-public class ScientificArticle{
+public class ScientificArticle {
 
     private String title;
 
     private String article_abstract;
+
+    private Map<String, String> metadata;
 
     private int year;
 
@@ -20,19 +22,23 @@ public class ScientificArticle{
 
     private Section section;
 
+    private Map<String, byte[]> image;
+
     public ScientificArticle(){}
 
     public ScientificArticle(String title, String article_abstract,
-                             int year, String type, String DOI, List<Author> authors,
-                             PublicationDetails publicationDetails, Section section) {
+                             Map<String, String> metadata, int year, String type, String DOI, List<Author> authors,
+                             PublicationDetails publicationDetails, Section section, Map<String, byte[]> image) {
         this.title = title;
         this.article_abstract = article_abstract;
+        this.metadata = metadata;
         this.year = year;
         this.type = type;
         this.DOI = DOI;
         this.authors = authors;
         this.publicationDetails = publicationDetails;
         this.section = section;
+        this.image = image;
     }
 
     public String getTitle() {
@@ -114,4 +120,19 @@ public class ScientificArticle{
     }
 
 
+    public Map<String, byte[]> getImage() {
+        return image;
+    }
+
+    public void setImage(Map<String, byte[]> image) {
+        this.image = image;
+    }
+
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+    }
 }
