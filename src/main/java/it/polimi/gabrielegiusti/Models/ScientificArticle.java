@@ -20,7 +20,7 @@ public class ScientificArticle {
 
     private PublicationDetails publicationDetails;
 
-    private Section section;
+    private List<Section> sections;
 
     private Map<String, byte[]> image;
 
@@ -28,7 +28,7 @@ public class ScientificArticle {
 
     public ScientificArticle(String title, String article_abstract,
                              Map<String, String> metadata, int year, String type, String DOI, List<Author> authors,
-                             PublicationDetails publicationDetails, Section section, Map<String, byte[]> image) {
+                             PublicationDetails publicationDetails, List<Section> sections, Map<String, byte[]> image) {
         this.title = title;
         this.article_abstract = article_abstract;
         this.metadata = metadata;
@@ -37,7 +37,7 @@ public class ScientificArticle {
         this.DOI = DOI;
         this.authors = authors;
         this.publicationDetails = publicationDetails;
-        this.section = section;
+        this.sections = sections;
         this.image = image;
     }
 
@@ -97,12 +97,12 @@ public class ScientificArticle {
         this.publicationDetails = publicationDetails;
     }
 
-    public Section getSection() {
-        return section;
+    public List<Section> getSections() {
+        return sections;
     }
 
-    public void setSection(Section section) {
-        this.section = section;
+    public void setSections(List<Section> sections) {
+        this.sections = sections;
     }
 
     @Override
@@ -115,7 +115,7 @@ public class ScientificArticle {
                 ", DOI='" + DOI + '\'' +
                 ", authors=" + authors +
                 ", publicationDetails=" + publicationDetails +
-                ", section=" + section +
+                ", sections=" + sections +
                 '}';
     }
 

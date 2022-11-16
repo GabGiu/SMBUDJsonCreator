@@ -23,6 +23,8 @@ public class Main {
 
     public static void main(String[] args) {
 
+        JsonHandler jsonHandler = new JsonHandler();
+
         String uri = "neo4j+s://b535a102.databases.neo4j.io";
         String username = "neo4j";
         String password = "ggeeRNSFsyayFSp86dQqNpZ4wUt7vroXY_lZyMiH-OU";
@@ -30,8 +32,8 @@ public class Main {
         List<ScientificArticle> scientificArticles = new ArrayList<>();
         List<Author> authors = new ArrayList<>();
 
-        ScientificArticle articleToStore = null;
-        Author authorToStore = null;
+        ScientificArticle articleToStore;
+        Author authorToStore;
         Affiliation affiliationToStore = null;
         Location locationToStore = null;
 
@@ -42,12 +44,15 @@ public class Main {
             List<Record> allAffiliationsRecord = app.getChunksOfAffiliations(0);
             List<Record> allLocationsRecord = app.getChunksOfLocations(0);
 
+            List<Object> generatedSectionsFromJson = jsonHandler.prepareReader("data/section.json").jsonToObject(List.class);
+
             int totalNumberOfAuthors = app.getNumberOfNodes("Author");
             int totalNumberOfAffiliation = app.getNumberOfNodes("Affiliation");
             int totalNumberOfLocations = app.getNumberOfNodes("Location");
             int authorSkip = 0;
             int affiliationSkip = 0;
             int locationSkip = 0;
+            int sectionIndex = 0;
 
             try(ProgressBar progressBar = new ProgressBar("Test", 100)) {
                 progressBar.maxHint(allArticlesRecord.size());
@@ -120,13 +125,15 @@ public class Main {
 
                     articleToStore.setAuthors(authors);
                     articleToStore.setArticle_abstract("");
-                    articleToStore.setSection(new Section());
+                    articleToStore.setSections((List<Section>) (generatedSectionsFromJson.get(sectionIndex)));
                     articleToStore.setPublicationDetails(new PublicationDetails());
+                    articleToStore.setMetadata(null);
                     scientificArticles.add(articleToStore);
+                    sectionIndex++;
                 }
             }
 
-            JsonHandler jsonHandler = new JsonHandler();
+            System.out.println(scientificArticles.get(0));
 
             String postUrl = "http://localhost:8080/SMBUD-API/rest/provisioning/articles/createMultiple";
             URL url = new URL(postUrl);
@@ -146,11 +153,11 @@ public class Main {
                     new InputStreamReader(connection.getInputStream(), "utf-8"))){
 
                 StringBuilder response = new StringBuilder();
-                String responseLine = null;
+                String responseLine;
                 while ((responseLine = br.readLine()) != null){
                     response.append(responseLine.trim());
                 }
-                System.out.println(response.toString());
+                System.out.println(response);
             }
 
 

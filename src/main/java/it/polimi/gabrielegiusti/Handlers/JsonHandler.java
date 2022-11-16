@@ -2,20 +2,44 @@ package it.polimi.gabrielegiusti.Handlers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 import it.polimi.gabrielegiusti.Factories.ScientificArticleTypeAdapterFactory;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Map;
 
 public class JsonHandler {
 
     Gson gson;
 
-    public JsonHandler(){
+    JsonReader jsonReader;
+
+    public JsonHandler() {
         gson = new GsonBuilder()
                 .registerTypeAdapterFactory(new ScientificArticleTypeAdapterFactory())
                 .create();
+
+    }
+
+    public JsonHandler prepareReader(String filename){
+        try {
+            jsonReader = new JsonReader(new FileReader(filename));
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+
+        return this;
     }
 
     public String objectToJson(Object object){
         return gson.toJson(object);
+    }
+
+    public List<Object> jsonToObject(Type type){
+        return gson.fromJson(jsonReader, type);
     }
 
 }

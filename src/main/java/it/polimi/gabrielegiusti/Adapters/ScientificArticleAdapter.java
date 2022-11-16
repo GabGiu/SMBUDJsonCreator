@@ -56,8 +56,8 @@ public class ScientificArticleAdapter<T> extends TypeAdapter<T> {
         jsonWriter.name("publicationDetails");
         gson.getAdapter(PublicationDetails.class).write(jsonWriter, record.getPublicationDetails());
 
-        jsonWriter.name("section");
-        gson.getAdapter(Section.class).write(jsonWriter, record.getSection());
+        jsonWriter.name("sections");
+        gson.getAdapter(List.class).write(jsonWriter, record.getSections());
 
         jsonWriter.endObject();
     }

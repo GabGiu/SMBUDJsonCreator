@@ -33,7 +33,13 @@ public class SectionAdapter<T> extends TypeAdapter<T> {
         jsonWriter.name("sectionTitle");
         gson.getAdapter(String.class).write(jsonWriter, record.getSectionTitle());
 
-        jsonWriter.name("subsection");
+        jsonWriter.name("sectionNumber");
+        gson.getAdapter(Integer.class).write(jsonWriter, record.getSectionNumber());
+
+        jsonWriter.name("sectionText");
+        gson.getAdapter(String.class).write(jsonWriter, record.getSectionText());
+
+        jsonWriter.name("subsections");
         gson.getAdapter(List.class).write(jsonWriter, record.getSubsection());
 
         jsonWriter.name("bibliography");
@@ -54,6 +60,8 @@ public class SectionAdapter<T> extends TypeAdapter<T> {
             fieldName = jsonReader.nextName();
             switch (fieldName) {
                 case "sectionTitle" -> record.setSectionTitle(gson.getAdapter(String.class).read(jsonReader));
+                case "sectionNumber" -> record.setSectionNumber(gson.getAdapter(Integer.class).read(jsonReader));
+                case "sectionText" -> record.setSectionText(gson.getAdapter(String.class).read(jsonReader));
                 case "subsection" -> record.setSubsection(gson.getAdapter(List.class).read(jsonReader));
                 case "bibliography" -> record.setBibliography(gson.getAdapter(String.class).read(jsonReader));
                 default -> jsonReader.skipValue();
