@@ -26,17 +26,45 @@ public class Neo4jManager implements AutoCloseable{
     public List<Record> findAllAuthors(){
         Query query = new Query(
                 """
-                        MATCH (a:Author)
-                        RETURN a AS Author
+                        MATCH (a:Author)-[:WRITING]->(sa:ScientificArticle)
+                        RETURN a AS Author, collect(sa.articleID) AS articleID
                         """
         );
 
         try (var session = driver.session(SessionConfig.forDatabase("neo4j"))){
-            var records = session.executeRead(tx -> tx.run(query).list());
-            for (Record record : records){
-                System.out.printf("Found author: %s%n", record.get("Author").get("name").asString());
-            }
-            return records;
+            return session.executeRead(tx -> tx.run(query).list());
+        }catch (Neo4jException ex) {
+            LOGGER.log(Level.SEVERE, query + " raised an exception", ex);
+            throw ex;
+        }
+    }
+
+    public List<Record> findAllAffiliations(){
+        Query query = new Query(
+                """
+                        MATCH (a1:Affiliation)<-[:RESEARCH]-(a:Author)
+                        RETURN a1 AS Affiliation, a.authorOrcid AS authorID
+                        """
+        );
+
+        try (var session = driver.session(SessionConfig.forDatabase("neo4j"))){
+            return session.executeRead(tx -> tx.run(query).list());
+        }catch (Neo4jException ex) {
+            LOGGER.log(Level.SEVERE, query + " raised an exception", ex);
+            throw ex;
+        }
+    }
+
+    public List<Record> findAllLocations(){
+        Query query = new Query(
+                """
+                        MATCH (l:Location)<-[:PLACE]-(a:Affiliation)
+                        RETURN l AS Location, a.affiliationID AS affiliationID
+                        """
+        );
+
+        try (var session = driver.session(SessionConfig.forDatabase("neo4j"))){
+            return session.executeRead(tx -> tx.run(query).list());
         }catch (Neo4jException ex) {
             LOGGER.log(Level.SEVERE, query + " raised an exception", ex);
             throw ex;

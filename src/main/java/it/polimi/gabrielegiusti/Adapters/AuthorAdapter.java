@@ -45,7 +45,7 @@ public class AuthorAdapter<T> extends TypeAdapter<T> {
         gson.getAdapter(String.class).write(jsonWriter, record.getBio());
 
         jsonWriter.name("dateOfBirth");
-        gson.getAdapter(Date.class).write(jsonWriter, record.getDateOfBirth());
+        gson.getAdapter(String.class).write(jsonWriter, record.getDateOfBirth());
 
         jsonWriter.name("affiliation");
         gson.getAdapter(Affiliation.class).write(jsonWriter, record.getAffiliation());
@@ -55,6 +55,26 @@ public class AuthorAdapter<T> extends TypeAdapter<T> {
 
     @Override
     public T read(JsonReader jsonReader) throws IOException {
-        return null;
+        String fieldName;
+
+        Author record = new Author();
+
+        jsonReader.beginObject();
+
+        while (jsonReader.hasNext()){
+            fieldName = jsonReader.nextName();
+            switch (fieldName){
+                case "affiliation" -> record.setAffiliation(gson.getAdapter(Affiliation.class).read(jsonReader));
+                case "email" -> record.setEmail(gson.getAdapter(String.class).read(jsonReader));
+                case "bio" -> record.setBio(gson.getAdapter(String.class).read(jsonReader));
+                case "name" -> record.setName(gson.getAdapter(String.class).read(jsonReader));
+                case "surname" -> record.setSurname(gson.getAdapter(String.class).read(jsonReader));
+                case "dateOfBirth" -> record.setDateOfBirth(gson.getAdapter(String.class).read(jsonReader));
+            }
+        }
+
+        jsonReader.endObject();
+
+        return (T) record;
     }
 }

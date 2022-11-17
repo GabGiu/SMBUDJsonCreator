@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import it.polimi.gabrielegiusti.Models.Bibliography;
 import it.polimi.gabrielegiusti.Models.Section;
 
 import java.io.IOException;
@@ -42,9 +43,6 @@ public class SectionAdapter<T> extends TypeAdapter<T> {
         jsonWriter.name("subsections");
         gson.getAdapter(List.class).write(jsonWriter, record.getSubsection());
 
-        jsonWriter.name("bibliography");
-        gson.getAdapter(String.class).write(jsonWriter, record.getBibliography());
-
         jsonWriter.endObject();
     }
 
@@ -63,7 +61,6 @@ public class SectionAdapter<T> extends TypeAdapter<T> {
                 case "sectionNumber" -> record.setSectionNumber(gson.getAdapter(Integer.class).read(jsonReader));
                 case "sectionText" -> record.setSectionText(gson.getAdapter(String.class).read(jsonReader));
                 case "subsection" -> record.setSubsection(gson.getAdapter(List.class).read(jsonReader));
-                case "bibliography" -> record.setBibliography(gson.getAdapter(String.class).read(jsonReader));
                 default -> jsonReader.skipValue();
             }
         }

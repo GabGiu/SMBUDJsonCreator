@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import it.polimi.gabrielegiusti.Factories.ScientificArticleTypeAdapterFactory;
+import it.polimi.gabrielegiusti.Models.ScientificArticle;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -40,6 +41,10 @@ public class JsonHandler {
 
     public List<Object> jsonToObject(Type type){
         return gson.fromJson(jsonReader, type);
+    }
+
+    public Object jsonToObject(String json, Type type){
+        return gson.fromJson(json, type);
     }
 
 }

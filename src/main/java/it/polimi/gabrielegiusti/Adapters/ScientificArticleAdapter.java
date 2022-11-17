@@ -59,11 +59,39 @@ public class ScientificArticleAdapter<T> extends TypeAdapter<T> {
         jsonWriter.name("sections");
         gson.getAdapter(List.class).write(jsonWriter, record.getSections());
 
+        jsonWriter.name("bibliography");
+        gson.getAdapter(Bibliography.class).write(jsonWriter, record.getBibliography());
+
         jsonWriter.endObject();
     }
 
     @Override
     public T read(JsonReader jsonReader) throws IOException {
-        return null;
+        String fieldName;
+
+        ScientificArticle record = new ScientificArticle();
+
+        jsonReader.beginObject();
+
+        while (jsonReader.hasNext()){
+            fieldName = jsonReader.nextName();
+            switch (fieldName){
+                case "title" -> record.setTitle(gson.getAdapter(String.class).read(jsonReader));
+                case "article_abstract" -> record.setArticle_abstract(gson.getAdapter(String.class).read(jsonReader));
+                case "metadata" -> record.setMetadata(gson.getAdapter(Map.class).read(jsonReader));
+                case "year" -> record.setYear(gson.getAdapter(Integer.class).read(jsonReader));
+                case "type" -> record.setType(gson.getAdapter(String.class).read(jsonReader));
+                case "DOI" -> record.setDOI(gson.getAdapter(String.class).read(jsonReader));
+                case "authors" -> record.setAuthors(gson.getAdapter(List.class).read(jsonReader));
+                case "publicationDetails" ->record.setPublicationDetails(gson.getAdapter(PublicationDetails.class).read(jsonReader));
+                case "sections" -> record.setSections(gson.getAdapter(List.class).read(jsonReader));
+                case "bibliography" -> record.setBibliography(gson.getAdapter(Bibliography.class).read(jsonReader));
+                case "image" -> record.setImage(gson.getAdapter(Map.class).read(jsonReader));
+            }
+        }
+
+        jsonReader.endObject();
+
+        return (T) record;
     }
 }

@@ -14,12 +14,12 @@ public class Author {
 
     private String surname;
 
-    private Date dateOfBirth;
+    private String dateOfBirth;
 
     public Author(){}
 
     public Author(Affiliation affiliation, String email, String bio,
-                  String name, String surname, Date dateOfBirth) {
+                  String name, String surname, String dateOfBirth) {
         this.affiliation = affiliation;
         this.email = email;
         this.bio = bio;
@@ -68,12 +68,13 @@ public class Author {
         this.surname = surname;
     }
 
-    public Date getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
+
 
 }

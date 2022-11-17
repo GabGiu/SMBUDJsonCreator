@@ -43,6 +43,23 @@ public class LocationAdapter<T> extends TypeAdapter<T> {
 
     @Override
     public T read(JsonReader jsonReader) throws IOException {
-        return null;
+        String fieldName;
+
+        Location record = new Location();
+
+        jsonReader.beginObject();
+
+        while (jsonReader.hasNext()){
+            fieldName = jsonReader.nextName();
+            switch (fieldName){
+                case "zipcode" -> record.setZipcode(gson.getAdapter(Integer.class).read(jsonReader));
+                case "city" -> record.setCity(gson.getAdapter(String.class).read(jsonReader));
+                case "country" -> record.setCountry(gson.getAdapter(String.class).read(jsonReader));
+            }
+        }
+
+        jsonReader.endObject();
+
+        return (T) record;
     }
 }

@@ -47,6 +47,23 @@ public class AffiliationAdapter<T> extends TypeAdapter<T> {
 
     @Override
     public T read(JsonReader jsonReader) throws IOException {
-        return null;
+        String fieldName;
+
+        Affiliation record = new Affiliation();
+
+        jsonReader.beginObject();
+
+        while (jsonReader.hasNext()){
+            fieldName = jsonReader.nextName();
+            switch (fieldName){
+                case "affiliationName" -> record.setAffiliationName(gson.getAdapter(String.class).read(jsonReader));
+                case "affiliationDepartment" -> record.setAffiliationDepartment(gson.getAdapter(String.class).read(jsonReader));
+                case "location" -> record.setLocation(gson.getAdapter(Location.class).read(jsonReader));
+            }
+        }
+
+        jsonReader.endObject();
+
+        return (T) record;
     }
 }

@@ -30,7 +30,7 @@ public class PublicationDetailsAdapter<T> extends TypeAdapter<T> {
 
         jsonWriter.beginObject();
 
-        jsonWriter.name("JournalName");
+        jsonWriter.name("journalName");
         gson.getAdapter(String.class).write(jsonWriter, record.getJournalName());
 
         jsonWriter.name("volume");
@@ -40,13 +40,16 @@ public class PublicationDetailsAdapter<T> extends TypeAdapter<T> {
         gson.getAdapter(Integer.class).write(jsonWriter, record.getNumber());
 
         jsonWriter.name("date");
-        gson.getAdapter(Date.class).write(jsonWriter, record.getDate());
+        gson.getAdapter(String.class).write(jsonWriter, record.getDate());
 
         jsonWriter.name("pages");
-        gson.getAdapter(Integer.class).write(jsonWriter, record.getPages());
+        gson.getAdapter(String.class).write(jsonWriter, record.getPages());
 
         jsonWriter.name("editor");
         gson.getAdapter(String.class).write(jsonWriter, record.getEditor());
+
+        jsonWriter.name("numberOfCopiesSold");
+        gson.getAdapter(Integer.class).write(jsonWriter, record.getNumberOfCopiesSold());
 
         jsonWriter.endObject();
     }
@@ -65,9 +68,10 @@ public class PublicationDetailsAdapter<T> extends TypeAdapter<T> {
                 case "journalName" -> record.setJournalName(gson.getAdapter(String.class).read(jsonReader));
                 case "volume" -> record.setVolume(gson.getAdapter(String.class).read(jsonReader));
                 case "number" -> record.setNumber(gson.getAdapter(Integer.class).read(jsonReader));
-                case "date" -> record.setDate(gson.getAdapter(Date.class).read(jsonReader));
-                case "pages" -> record.setPages(gson.getAdapter(Integer.class).read(jsonReader));
+                case "date" -> record.setDate(gson.getAdapter(String.class).read(jsonReader));
+                case "pages" -> record.setPages(gson.getAdapter(String.class).read(jsonReader));
                 case "editor" -> record.setEditor(gson.getAdapter(String.class).read(jsonReader));
+                case "numberOfCopiesSold" -> record.setNumberOfCopiesSold(gson.getAdapter(Integer.class).read(jsonReader));
                 default -> jsonReader.skipValue();
             }
         }

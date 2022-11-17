@@ -12,17 +12,14 @@ public class Section {
 
     private List<Subsection> subsection;
 
-    private String bibliography;
-
     public Section(){}
 
-    public Section(String sectionTitle, List<Paragraph> paragraph,
+    public Section(String sectionTitle,
                    String sectionText, List<Subsection> subsection,
-                   String bibliography) {
+                   Bibliography bibliography) {
         this.sectionTitle = sectionTitle;
         this.sectionText = sectionText;
         this.subsection = subsection;
-        this.bibliography = bibliography;
     }
 
     public String getSectionTitle() {
@@ -39,14 +36,6 @@ public class Section {
 
     public void setSubsection(List<Subsection> subsection) {
         this.subsection = subsection;
-    }
-
-    public String getBibliography() {
-        return bibliography;
-    }
-
-    public void setBibliography(String bibliography) {
-        this.bibliography = bibliography;
     }
 
     public int getSectionNumber() {

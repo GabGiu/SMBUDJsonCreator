@@ -10,23 +10,26 @@ public class PublicationDetails {
 
     private int number;
 
-    private Date date;
+    private String date;
 
-    private int pages;
+    private String pages;
 
     private String editor;
+
+    private int numberOfCopiesSold;
 
     public PublicationDetails(){}
 
     public PublicationDetails(String journalName, String volume,
-                              int number, Date date, int pages,
-                              String editor) {
+                              int number, String date, String pages,
+                              String editor, int numberOfCopiesSold) {
         this.journalName = journalName;
         this.volume = volume;
         this.number = number;
         this.date = date;
         this.pages = pages;
         this.editor = editor;
+        this.numberOfCopiesSold = numberOfCopiesSold;
     }
 
     public String getJournalName() {
@@ -53,19 +56,19 @@ public class PublicationDetails {
         this.number = number;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public int getPages() {
+    public String getPages() {
         return pages;
     }
 
-    public void setPages(int pages) {
+    public void setPages(String pages) {
         this.pages = pages;
     }
 
@@ -77,4 +80,11 @@ public class PublicationDetails {
         this.editor = editor;
     }
 
+    public int getNumberOfCopiesSold() {
+        return numberOfCopiesSold;
+    }
+
+    public void setNumberOfCopiesSold(int numberOfCopiesSold) {
+        this.numberOfCopiesSold = numberOfCopiesSold;
+    }
 }

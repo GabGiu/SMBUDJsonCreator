@@ -1,5 +1,7 @@
 package it.polimi.gabrielegiusti.Models;
 
+import it.polimi.gabrielegiusti.Handlers.JsonHandler;
+
 import java.util.*;
 
 public class ScientificArticle {
@@ -22,13 +24,15 @@ public class ScientificArticle {
 
     private List<Section> sections;
 
+    private Bibliography bibliography;
+
     private Map<String, byte[]> image;
 
     public ScientificArticle(){}
 
     public ScientificArticle(String title, String article_abstract,
                              Map<String, String> metadata, int year, String type, String DOI, List<Author> authors,
-                             PublicationDetails publicationDetails, List<Section> sections, Map<String, byte[]> image) {
+                             PublicationDetails publicationDetails, List<Section> sections, Bibliography bibliography, Map<String, byte[]> image) {
         this.title = title;
         this.article_abstract = article_abstract;
         this.metadata = metadata;
@@ -38,6 +42,7 @@ public class ScientificArticle {
         this.authors = authors;
         this.publicationDetails = publicationDetails;
         this.sections = sections;
+        this.bibliography = bibliography;
         this.image = image;
     }
 
@@ -105,20 +110,30 @@ public class ScientificArticle {
         this.sections = sections;
     }
 
+    public Bibliography getBibliography() {
+        return bibliography;
+    }
+
+    public void setBibliography(Bibliography bibliography) {
+        this.bibliography = bibliography;
+    }
+
     @Override
     public String toString() {
         return "ScientificArticle{" +
                 "title='" + title + '\'' +
                 ", article_abstract='" + article_abstract + '\'' +
+                ", metadata=" + metadata +
                 ", year=" + year +
                 ", type='" + type + '\'' +
                 ", DOI='" + DOI + '\'' +
                 ", authors=" + authors +
                 ", publicationDetails=" + publicationDetails +
                 ", sections=" + sections +
+                ", bibliography=" + bibliography +
+                ", image=" + image +
                 '}';
     }
-
 
     public Map<String, byte[]> getImage() {
         return image;
@@ -135,4 +150,9 @@ public class ScientificArticle {
     public void setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
     }
+
+    public ScientificArticle deepCopy(JsonHandler jsonHandler){
+        return (ScientificArticle) jsonHandler.jsonToObject(jsonHandler.objectToJson(this), ScientificArticle.class);
+    }
+
 }
