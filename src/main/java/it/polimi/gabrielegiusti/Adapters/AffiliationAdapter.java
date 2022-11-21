@@ -59,6 +59,7 @@ public class AffiliationAdapter<T> extends TypeAdapter<T> {
                 case "affiliationName" -> record.setAffiliationName(gson.getAdapter(String.class).read(jsonReader));
                 case "affiliationDepartment" -> record.setAffiliationDepartment(gson.getAdapter(String.class).read(jsonReader));
                 case "location" -> record.setLocation(gson.getAdapter(Location.class).read(jsonReader));
+                default -> jsonReader.skipValue();
             }
         }
 

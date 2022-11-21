@@ -10,7 +10,7 @@ public class ScientificArticle {
 
     private String article_abstract;
 
-    private Map<String, String> metadata;
+    private List<String> metadata;
 
     private int year;
 
@@ -24,15 +24,15 @@ public class ScientificArticle {
 
     private List<Section> sections;
 
-    private Bibliography bibliography;
+    private List<Reference> bibliography;
 
-    private Map<String, byte[]> image;
+    private List<Figure> figures;
 
     public ScientificArticle(){}
 
     public ScientificArticle(String title, String article_abstract,
-                             Map<String, String> metadata, int year, String type, String DOI, List<Author> authors,
-                             PublicationDetails publicationDetails, List<Section> sections, Bibliography bibliography, Map<String, byte[]> image) {
+                             List<String> metadata, int year, String type, String DOI, List<Author> authors,
+                             PublicationDetails publicationDetails, List<Section> sections, List<Reference> bibliography, List<Figure> figures) {
         this.title = title;
         this.article_abstract = article_abstract;
         this.metadata = metadata;
@@ -43,7 +43,7 @@ public class ScientificArticle {
         this.publicationDetails = publicationDetails;
         this.sections = sections;
         this.bibliography = bibliography;
-        this.image = image;
+        this.figures = figures;
     }
 
     public String getTitle() {
@@ -110,11 +110,11 @@ public class ScientificArticle {
         this.sections = sections;
     }
 
-    public Bibliography getBibliography() {
+    public List<Reference> getBibliography() {
         return bibliography;
     }
 
-    public void setBibliography(Bibliography bibliography) {
+    public void setBibliography(List<Reference> bibliography) {
         this.bibliography = bibliography;
     }
 
@@ -131,23 +131,23 @@ public class ScientificArticle {
                 ", publicationDetails=" + publicationDetails +
                 ", sections=" + sections +
                 ", bibliography=" + bibliography +
-                ", image=" + image +
+                ", image=" + figures +
                 '}';
     }
 
-    public Map<String, byte[]> getImage() {
-        return image;
+    public List<Figure> getFigures() {
+        return figures;
     }
 
-    public void setImage(Map<String, byte[]> image) {
-        this.image = image;
+    public void setFigures(List<Figure> figures) {
+        this.figures = figures;
     }
 
-    public Map<String, String> getMetadata() {
+    public List<String> getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(Map<String, String> metadata) {
+    public void setMetadata(List<String> metadata) {
         this.metadata = metadata;
     }
 

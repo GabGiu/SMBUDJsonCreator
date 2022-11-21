@@ -14,9 +14,9 @@ import java.util.Map;
 
 public class JsonHandler {
 
-    Gson gson;
+    private Gson gson;
 
-    JsonReader jsonReader;
+    private JsonReader jsonReader;
 
     public JsonHandler() {
         gson = new GsonBuilder()
@@ -45,6 +45,11 @@ public class JsonHandler {
 
     public Object jsonToObject(String json, Type type){
         return gson.fromJson(json, type);
+    }
+
+    public  <T extends Object> T deepCopy(Class<T> clazz, T object){
+
+        return (T) jsonToObject(objectToJson(object), clazz);
     }
 
 }

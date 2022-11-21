@@ -15,8 +15,7 @@ public class Section {
     public Section(){}
 
     public Section(String sectionTitle,
-                   String sectionText, List<Subsection> subsection,
-                   Bibliography bibliography) {
+                   String sectionText, List<Subsection> subsection) {
         this.sectionTitle = sectionTitle;
         this.sectionText = sectionText;
         this.subsection = subsection;

@@ -55,6 +55,7 @@ public class LocationAdapter<T> extends TypeAdapter<T> {
                 case "zipcode" -> record.setZipcode(gson.getAdapter(Integer.class).read(jsonReader));
                 case "city" -> record.setCity(gson.getAdapter(String.class).read(jsonReader));
                 case "country" -> record.setCountry(gson.getAdapter(String.class).read(jsonReader));
+                default -> jsonReader.skipValue();
             }
         }
 

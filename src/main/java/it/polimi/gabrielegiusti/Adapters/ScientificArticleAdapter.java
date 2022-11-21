@@ -8,7 +8,6 @@ import it.polimi.gabrielegiusti.Models.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 public class ScientificArticleAdapter<T> extends TypeAdapter<T> {
 
@@ -35,11 +34,11 @@ public class ScientificArticleAdapter<T> extends TypeAdapter<T> {
         jsonWriter.name("title");
         gson.getAdapter(String.class).write(jsonWriter, record.getTitle());
 
-        jsonWriter.name("article_abstract");
+        jsonWriter.name("abstract");
         gson.getAdapter(String.class).write(jsonWriter, record.getArticle_abstract());
 
         jsonWriter.name("metadata");
-        gson.getAdapter(Map.class).write(jsonWriter, record.getMetadata());
+        gson.getAdapter(List.class).write(jsonWriter, record.getMetadata());
 
         jsonWriter.name("year");
         gson.getAdapter(Integer.class).write(jsonWriter, record.getYear());
@@ -60,7 +59,10 @@ public class ScientificArticleAdapter<T> extends TypeAdapter<T> {
         gson.getAdapter(List.class).write(jsonWriter, record.getSections());
 
         jsonWriter.name("bibliography");
-        gson.getAdapter(Bibliography.class).write(jsonWriter, record.getBibliography());
+        gson.getAdapter(List.class).write(jsonWriter, record.getBibliography());
+
+        jsonWriter.name("figures");
+        gson.getAdapter(List.class).write(jsonWriter, record.getFigures());
 
         jsonWriter.endObject();
     }
@@ -77,16 +79,17 @@ public class ScientificArticleAdapter<T> extends TypeAdapter<T> {
             fieldName = jsonReader.nextName();
             switch (fieldName){
                 case "title" -> record.setTitle(gson.getAdapter(String.class).read(jsonReader));
-                case "article_abstract" -> record.setArticle_abstract(gson.getAdapter(String.class).read(jsonReader));
-                case "metadata" -> record.setMetadata(gson.getAdapter(Map.class).read(jsonReader));
+                case "article_abstract", "abstract" -> record.setArticle_abstract(gson.getAdapter(String.class).read(jsonReader));
+                case "metadata" -> record.setMetadata(gson.getAdapter(List.class).read(jsonReader));
                 case "year" -> record.setYear(gson.getAdapter(Integer.class).read(jsonReader));
                 case "type" -> record.setType(gson.getAdapter(String.class).read(jsonReader));
                 case "DOI" -> record.setDOI(gson.getAdapter(String.class).read(jsonReader));
                 case "authors" -> record.setAuthors(gson.getAdapter(List.class).read(jsonReader));
                 case "publicationDetails" ->record.setPublicationDetails(gson.getAdapter(PublicationDetails.class).read(jsonReader));
                 case "sections" -> record.setSections(gson.getAdapter(List.class).read(jsonReader));
-                case "bibliography" -> record.setBibliography(gson.getAdapter(Bibliography.class).read(jsonReader));
-                case "image" -> record.setImage(gson.getAdapter(Map.class).read(jsonReader));
+                case "bibliography" -> record.setBibliography(gson.getAdapter(List.class).read(jsonReader));
+                case "figures" -> record.setFigures(gson.getAdapter(List.class).read(jsonReader));
+                default -> jsonReader.skipValue();
             }
         }
 

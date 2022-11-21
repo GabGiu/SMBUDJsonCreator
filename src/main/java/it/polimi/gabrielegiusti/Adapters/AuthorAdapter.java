@@ -70,6 +70,7 @@ public class AuthorAdapter<T> extends TypeAdapter<T> {
                 case "name" -> record.setName(gson.getAdapter(String.class).read(jsonReader));
                 case "surname" -> record.setSurname(gson.getAdapter(String.class).read(jsonReader));
                 case "dateOfBirth" -> record.setDateOfBirth(gson.getAdapter(String.class).read(jsonReader));
+                default -> jsonReader.skipValue();
             }
         }
 

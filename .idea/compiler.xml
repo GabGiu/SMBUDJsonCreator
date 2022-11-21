@@ -6,7 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="SMBUDJsonCreator" />
+        <module name="SMBUD_FromNeoToMongoViaAPI" />
       </profile>
     </annotationProcessing>
   </component>

@@ -26,7 +26,7 @@ public class ReferenceAdapter<T> extends TypeAdapter<T> {
     @Override
     public void write(JsonWriter jsonWriter, T t) throws IOException {
 
-        Reference record = new Reference();
+        Reference record = (Reference) t;
 
         jsonWriter.beginObject();
 
@@ -60,6 +60,7 @@ public class ReferenceAdapter<T> extends TypeAdapter<T> {
                 case "title" -> record.setTitle(gson.getAdapter(String.class).read(jsonReader));
                 case "year" -> record.setYear(gson.getAdapter(Integer.class).read(jsonReader));
                 case "DOI" -> record.setDOI(gson.getAdapter(String.class).read(jsonReader));
+                default -> jsonReader.skipValue();
             }
         }
 
